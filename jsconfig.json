@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    // 目标打包代码为es5
+    "target": "es5",
+    // es模块化规范
+    "module": "esnext",
+    // 当前路径
+    "baseUrl": "./",
+    // 查找规则node
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "utils/*":[
+        "src/utils/*"
+      ]
+    },
+    // 可能用到的库，给出友好提示
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  }
+}
