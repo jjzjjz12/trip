@@ -1,8 +1,19 @@
 :root {
     --primary-color: #ff9854;
+    --van-primary-color:var(--primary-color);
+    --van-search-left-icon-color: var(--primary-color) !important;
 }
 
 body {
     font-size: 14px;
     font-family: 'Courier New', Courier, monospace;
+}
+
+.hideTabBar {
+  position: relative;
+  background-color: #fff;
+  height: 100vh;
+  z-index: 3;
+  /* 这个div的元素在当前div(height:100vh)里滚动，不设置的话滚动就是在外部div滚动 */
+  overflow-y: auto;
 }
