@@ -4,8 +4,19 @@ export function getHomeHotSuggests() {
  return TMZRequest.get({
     url: "/home/hotSuggests",
   })
-    .then((res) => {
-        return res
-    })
-    .catch((err) => err);
+}
+
+export function getHomeCategories() {
+  return TMZRequest.get({
+    url: "/home/categories",
+  });
+}
+
+export function getHomeHouseList(currentPage) {
+  return TMZRequest.get({
+    url: "/home/houselist",
+    params:{
+      page:currentPage
+    }
+  });
 }

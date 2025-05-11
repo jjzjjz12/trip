@@ -16,7 +16,7 @@
             <div class="start">
                 <div class="date">
                     <span class="tip">入住</span>
-                    <span class="time">{{ startDate }}</span>
+                    <span class="time">{{ startDateStr }}</span>
                 </div>
             </div>
             <div class="stay">
@@ -25,37 +25,44 @@
             <div class="end">
                 <div class="date">
                     <span class="tip">离店</span>
-                    <span class="time">{{ endDate }}</span>
+                    <span class="time">{{ endDateStr }}</span>
                 </div>
             </div>
         </div>
         <van-calendar v-model:show="show" type="range" @confirm="onConfirm" />
 
+        <!-- 价格/人数 -->
         <div class="section bottom-line date-range price-counter">
             <div class="start">价格不限</div>
             <div class="end">人数不限</div>
         </div>
+
+        <!-- 关键字 -->
         <div class="keyword section bottom-line">关键字/位置/民宿名</div>
 
         <!-- 热门推荐 -->
-        <div class="hot-suggests">
+        <div class="section hot-suggests">
             <template v-for="(item, index) in hotSuggests" :key="index">
-                <div 
-                class="item"
-                :style="{ color: item.tagText.color, background: item.tagText.background.color}"
-                >
-                {{ item.tagText.text }}
-            </div>
+                <div class="item" :style="{ color: item.tagText.color, background: item.tagText.background.color }">
+                    {{ item.tagText.text }}
+                </div>
             </template>
         </div>
+
+        <!-- 搜索 -->
+        <div class="section search-btn">
+            <div class="btn" @click="searchBtnClick">搜索</div>
+        </div>
+
     </div>
 </template>
 
 <script setup>
 import useCityStore from '@/store/modules/city';
+import useMainStore from '@/store/modules/main';
 import { formatMonthDay } from '@/utils/format_date';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router'
 
 const props = defineProps({
@@ -88,11 +95,13 @@ function getCity() {
     router.push('/city')
 }
 
-const nowDate = new Date()
-const startDate = ref(formatMonthDay(nowDate))
+const mainStore = useMainStore()
 
-const newDate = nowDate.setDate(nowDate.getDate() + 1)
-const endDate = ref(formatMonthDay(newDate))
+const {startDate, endDate} = storeToRefs(mainStore)
+
+const startDateStr = computed(()=>formatMonthDay(startDate.value))
+const endDateStr = computed(()=>formatMonthDay(endDate.value))
+
 
 const totalDays = ref(1)
 
@@ -100,9 +109,21 @@ const show = ref(false)
 const onConfirm = (values) => {
     const [start, end] = values
     show.value = false
-    startDate.value = formatMonthDay(start)
-    endDate.value = formatMonthDay(end)
+    mainStore.startDate = start
+    mainStore.endDate = end
     totalDays.value = end.getDate() - start.getDate()
+}
+
+// 点击搜索时传递时间区间以及所在位置
+function searchBtnClick() {
+    router.push({
+        path: '/search',
+        query:{
+            startDate: startDate.value,
+            endDate: endDate.value,
+            currentCity: currentCity.value.cityName
+        }
+    })
 }
 
 </script>
@@ -180,12 +201,8 @@ const onConfirm = (values) => {
 }
 
 .hot-suggests {
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    flex-wrap: wrap;
-    color: #999;
     margin: 10px 0;
+    height: auto;
 
     .item {
         padding: 4px 8px;
@@ -193,6 +210,23 @@ const onConfirm = (values) => {
         border-radius: 14px;
         font-size: 12px;
         line-height: 1;
+    }
+}
+
+.search-btn {
+    height: auto;
+
+    .btn {
+        width: 342px;
+        height: 38px;
+        max-height: 50px;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 38px;
+        text-align: center;
+        border-radius: 20px;
+        color: #fff;
+        background-image: var(--theme-linear-gradient);
     }
 }
 </style>
