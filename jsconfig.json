@@ -8,6 +8,7 @@
     "baseUrl": "./",
     // 查找规则node
     "moduleResolution": "node",
+    "jsx":"preserve",
     "paths": {
       "@/*": [
         "src/*"

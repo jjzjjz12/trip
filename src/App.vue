@@ -1,30 +1,19 @@
 <template>
-    <div class="loading">
-        <template>
-            <p>你对了吗</p>
-            djdjajdjaajlvakdeqij
-        </template>
-        loadingcccccccccccccccccccccccccccccccccccc
-    </div>
-        <router-view></router-view>
-    <tabBar/>
+    <loading/>
+    <router-view v-slot="{ Component }">
+        <keep-alive include="home">
+            <component :is='Component'></component>
+        </keep-alive>
+    </router-view>
+    <!-- <router-view></router-view> -->
+    <!-- <tabBar /> -->
+     <tabBar_01/>
 </template>
 
 <script setup>
-import tabBar from './components/tab-bar/tab-bar.vue';
-import { useRoute } from 'vue-router'
-const route = useRoute()
+// import tabBar from './components/tab-bar/tab-bar.vue';
+import tabBar_01 from './components/tab-bar/tab-bar_01.vue';
+import loading from './components/loading/loading.vue';
 </script>
 
-<style lang="less" scoped>
-.loading {
-    position: fixed;
-    z-index: 999;
-    background: rgba(0, 0 , 0, .5);
-    height: 100vh;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-</style>
+<style lang="less" scoped></style>

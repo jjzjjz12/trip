@@ -1,11 +1,26 @@
 import axios from "axios";
 import { BASE_URL, TIMEOUT } from "./config.js";
+import useMainStore from "@/store/modules/main.js";
+
+const mainStore = useMainStore()
 
 class TMZRequest {
     constructor(url, timeout = TIMEOUT) {
         this.instance = axios.create({
             baseURL:url,
             timeout:timeout
+        })
+
+        this.instance.interceptors.request.use(config=>{
+            mainStore.isLoading = true
+            return config
+        },err=>err)
+        this.instance.interceptors.response.use(response=>{
+            mainStore.isLoading = false
+            return response
+        },err=>{
+            mainStore.isLoading = false
+            return err
         })
     }
 
