@@ -79,7 +79,7 @@ const sectionEls = ref({})
 // 使用:ref='getxxx'可以直接调用这个方法并传入组件实例对象
 // 挂载时、卸载时都会调用
 const getSectionRef = (el) => {
-    if(!el) return
+    if (!el) return
     const name = el.$el.getAttribute('name')
     sectionEls.value[name] = el.$el
 }
@@ -88,40 +88,47 @@ const names = computed(() => {
     return Object.keys(sectionEls.value)
 })
 
+const isScrollActive = ref(true)
+
 const tabClick = (index) => {
+    isScrollActive.value = false
     const name = names.value[index]
-    let instance = sectionEls.value[name].offsetTop
-    if (index !== 0) {
-        instance -= 40
-    }
+    const instance = sectionEls.value[name].offsetTop - 40
     detailRef.value.scrollTo({
         // 已经把所有组件实例传进数组，此时只需要利用索引找到对应的组件完成滚动
         top: instance,
         behavior: 'smooth'
     })
+    setTimeout(() => {
+        isScrollActive.value = true
+    }, 500);
 }
 
-// const topTabBarRef = ref()
-
-// const els = computed(()=>Object.values(sectionEls.value))
-// const elOffsetTops = computed(()=>els.value.map(el => el.offsetTop))
-
-// watch(scrollTop, (newValue) => {
-//     let index = elOffsetTops.value.length - 1
-//     const nextIndex = elOffsetTops.value.findIndex(
-//         top => top >= newValue + 44
-//     )
-//     if(nextIndex !== -1) index = nextIndex
-//     console.log(index);
-//     topTabBarRef.value?.setCurrentIndex(index)
-// })
+const elOffsetTops = computed(() => Object.values(sectionEls.value).map(el => el.offsetTop))
 const topTabBarRef = ref()
-const offsetTops = computed(() => Object.values(sectionEls.value).map(el => el.offsetTop))
 watch(scrollTop, throttle((newValue) => {
-    const index = offsetTops.value.findIndex(top => top >= newValue)
-    const curIndex = index === -1 ? offsetTops.value.length - 1 : index - 1
+    if (!isScrollActive.value) return
+    const index = elOffsetTops.value.findIndex(item => item >= newValue + 100)
+    let curIndex = index - 1
+    if (index === 0) {
+        curIndex = 0
+    }
+    if (index === -1) {
+        curIndex = elOffsetTops.value.length - 1
+    }
     topTabBarRef.value?.setCurrentIndex(curIndex)
-},100))
+}, 500))
+
+
+// const topTabBarRef = ref()
+// const offsetTops = computed(() => Object.values(sectionEls.value).map(el => el.offsetTop))
+// watch(scrollTop, throttle((newValue) => {
+//     const index = offsetTops.value.findIndex(top => top >= newValue)
+//     let curIndex = index === -1 ? offsetTops.value.length - 1 : index - 1
+//     if(curIndex < 0) curIndex = 0
+//     console.log(curIndex);
+//     topTabBarRef.value?.setCurrentIndex(curIndex)
+// },100))
 
 </script>
 

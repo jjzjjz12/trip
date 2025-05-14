@@ -22,7 +22,6 @@ const currentIndex = ref(0)
 function setCurrentIndex(index) {
     currentIndex.value = index
 }
-const rootEl = ref()
 defineExpose({
 setCurrentIndex,
 })

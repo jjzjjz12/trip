@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
+import pxtovw from "postcss-px-to-viewport";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { VantResolver } from "@vant/auto-import-resolver";
@@ -21,4 +22,19 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
+  css: {
+    postcss: {
+      plugins: [
+        pxtovw({
+          viewportWidth: 375,
+          unitPrecision: 5,
+          viewportUnit: "vw",
+          selectorBlackList: ["ignore"],
+          minPixelValue: 1,
+          mediaQuery: false,
+        }),
+      ],
+    },
+  },
+  base: '/trip/'
 });
