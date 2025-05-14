@@ -1,0 +1,1 @@
+import{_ as t,c as s,a as r,y as a,o}from"./index-Db355vqp.js";const n={},c={class:"search hideTabBar"};function u(e,l){return o(),s("div",c,[r("h2",null,"开始时间："+a(e.$route.query.startDate),1),r("h2",null,"结束时间："+a(e.$route.query.endDate),1),r("h2",null,"所在城市："+a(e.$route.query.currentCity),1)])}const d=t(n,[["render",u]]);export{d as default};

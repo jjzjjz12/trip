@@ -1,1 +1,0 @@
-import{_ as r,c as o,a as s,o as t}from"./index-CVHfDQ4F.js";const c={},n={class:"order"};function a(d,e){return t(),o("div",n,e[0]||(e[0]=[s("h2",null,"order",-1)]))}const l=r(c,[["render",a]]);export{l as default};

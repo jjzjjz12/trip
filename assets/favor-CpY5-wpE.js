@@ -1,1 +1,0 @@
-import{_ as o,c as r,a as s,o as a}from"./index-CVHfDQ4F.js";const t={},c={class:"favor"};function n(f,e){return a(),r("div",c,e[0]||(e[0]=[s("h2",null,"favor",-1)]))}const l=o(t,[["render",n]]);export{l as default};
